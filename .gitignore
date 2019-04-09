@@ -1,0 +1,9 @@
+*.ini
+*.json
+*.pdf
+*part-*
+*.crc
+*_SUCCESS
+*.ipynb_checkpoints
+*.csv
+*.txt
