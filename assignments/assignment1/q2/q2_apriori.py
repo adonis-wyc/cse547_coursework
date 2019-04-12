@@ -63,7 +63,8 @@ def _get_pair_rules_with_confidence(frequent_pair_counts, frequent_singleton_cou
         pair_rules.append(AssociationRule(new_id_to_old_id_map[x], new_id_to_old_id_map[y], count / frequent_singleton_counts[x]))
         pair_rules.append(AssociationRule(new_id_to_old_id_map[y], new_id_to_old_id_map[x], count / frequent_singleton_counts[y]))
 
-    return sorted(pair_rules, key=lambda association_rule: association_rule.confidence, reverse=True)
+    secondary_sorted = sorted(pair_rules, key=lambda association_rule: association_rule.lhs)
+    return sorted(secondary_sorted, key=lambda association_rule: association_rule.confidence, reverse=True)
 
 
 def _get_triple_rules_with_confidence(frequent_triple_counts, frequent_pair_counts, new_id_to_old_id_map):
@@ -74,7 +75,9 @@ def _get_triple_rules_with_confidence(frequent_triple_counts, frequent_pair_coun
         triple_rules.append(AssociationRule((new_id_to_old_id_map[x], new_id_to_old_id_map[z]), new_id_to_old_id_map[y], count / frequent_pair_counts[(x, z)]))
         triple_rules.append(AssociationRule((new_id_to_old_id_map[y], new_id_to_old_id_map[z]), new_id_to_old_id_map[x], count / frequent_pair_counts[(y, z)]))
 
-    return sorted(triple_rules, key=lambda association_rule: association_rule.confidence, reverse=True)
+    tertiary_sorted = sorted(triple_rules, key=lambda association_rule: association_rule.lhs[1], reverse=True)
+    secondary_sorted = sorted(tertiary_sorted, key=lambda association_rule: association_rule.lhs[0], reverse=True)
+    return sorted(secondary_sorted, key=lambda association_rule: association_rule.confidence, reverse=True)
 
 
 if __name__ == "__main__":
